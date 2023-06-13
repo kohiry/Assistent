@@ -1,8 +1,10 @@
+import time
 from typing import List
 
 import requests
 
 from Remembers import AssistantRemembers
+from TOKEN import TOKEN, TOKEN_TELEGRAM
 
 
 def get_time(text: str) -> str | None:
@@ -49,29 +51,41 @@ class Assistent:
     def get_remembers(self) -> List[str]:
         pass
 
+    def send_to_telegram(self, text):
+
+        requests.post(
+            f'https://api.telegram.org/bot{TOKEN_TELEGRAM}/sendMessage?chat_id=644823883&text={text}')
+
     def get_weather(self):
 
-        api_key = 'your_api_key'
-        lat, lon = 55.75396, 37.620393  # координаты Москвы
+        lat, lon = 53.195873, 50.100193  # Samara
 
-        url = f'https://api.weather.yandex.ru/v2/informers?lat={lat}&lon={lon}'
+        url = f'https://api.weather.yandex.ru/v2/forecast?lat={lat}&lon={lon}&[lang=ru_RU]'
 
-        headers = {'X-Yandex-API-Key': api_key}
+        headers = {'X-Yandex-API-Key': TOKEN}
 
         response = requests.get(url, headers=headers)
 
         if response.status_code == 200:
             data = response.json()
+            # print(data)
             fact = data['fact']
-            condition = fact['condition']
+            good = 'ЕБААА ВУХУ, МИР ОХУЕНЕН, Я ОХУЕНЕН, ЛЮБЛЮ ЖИЗНЬ'
+            bad = 'ЕБААААААААААААААААААААТЬ НАХУЙ'
+            condition = good if fact['condition'] == 'clear' else bad
             temp = fact['temp']
-            print(f'Сейчас {condition}, температура {temp} градусов по Цельсию.')
+            return f'Сейчас {condition}, температура {temp} градусов по Цельсию.'
         else:
-            print('Не удалось получить информацию о погоде.')
+            return 'Не удалось получить информацию о погоде.'
+            # pprint(response.json())
 
 
 def main():
     print('Hi')
+    End = True
+    while End:
+        Assistent().send_to_telegram(Assistent().get_weather())
+        time.sleep(7200)
 
 
 if __name__ == '__main__':
