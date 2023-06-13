@@ -1,5 +1,7 @@
 from typing import List
 
+import requests
+
 from Remembers import AssistantRemembers
 
 
@@ -46,6 +48,26 @@ class Assistent:
 
     def get_remembers(self) -> List[str]:
         pass
+
+    def get_weather(self):
+
+        api_key = 'your_api_key'
+        lat, lon = 55.75396, 37.620393  # координаты Москвы
+
+        url = f'https://api.weather.yandex.ru/v2/informers?lat={lat}&lon={lon}'
+
+        headers = {'X-Yandex-API-Key': api_key}
+
+        response = requests.get(url, headers=headers)
+
+        if response.status_code == 200:
+            data = response.json()
+            fact = data['fact']
+            condition = fact['condition']
+            temp = fact['temp']
+            print(f'Сейчас {condition}, температура {temp} градусов по Цельсию.')
+        else:
+            print('Не удалось получить информацию о погоде.')
 
 
 def main():
