@@ -72,9 +72,12 @@ class Assistent:
             fact = data['fact']
             good = 'ЕБААА ВУХУ, МИР ОХУЕНЕН, Я ОХУЕНЕН, ЛЮБЛЮ ЖИЗНЬ'
             bad = 'ЕБААААААААААААААААААААТЬ НАХУЙ'
+            good_not_rainy = 'Щииищ, ещё и дождя не будет'
+            bad_with_rainy = 'Ебал этот день, ебал этот час. Дождь с шансем:'
             condition = good if fact['condition'] == 'clear' else bad
             temp = fact['temp']
-            return f'Сейчас {condition}, температура {temp} градусов по Цельсию.'
+            rainy = good_not_rainy if 0 == fact['prec_strength'] else str(float(bad_with_rainy) * 100)
+            return f'Сейчас {condition} {rainy}, температура {temp} градусов по Цельсию.'
         else:
             return 'Не удалось получить информацию о погоде.'
             # pprint(response.json())
