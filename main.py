@@ -1,4 +1,3 @@
-import time
 from typing import List
 
 import requests
@@ -76,7 +75,8 @@ class Assistent:
             bad_with_rainy = 'Ебал этот день, ебал этот час. Дождь с шансем:'
             condition = good if fact['condition'] == 'clear' else bad
             temp = fact['temp']
-            rainy = good_not_rainy if 0 == fact['prec_strength'] else str(float(bad_with_rainy) * 100)
+            rainy = good_not_rainy if 0 == fact['prec_strength'] else bad_with_rainy + str(
+                float(fact['prec_strength']) * 100) + '%'
             return f'Сейчас {condition} {rainy}, температура {temp} градусов по Цельсию.'
         else:
             return 'Не удалось получить информацию о погоде.'
@@ -87,8 +87,12 @@ def main():
     print('Hi')
     End = True
     while End:
-        Assistent().send_to_telegram(Assistent().get_weather())
-        time.sleep(7200)
+        answer = input('введи что хочешь посмотреть \n ')
+        if answer == 'погода':
+            Assistent().send_to_telegram(Assistent().get_weather())
+        if answer == ':q':
+            End = False
+        print("------------------------------------------")
 
 
 if __name__ == '__main__':
