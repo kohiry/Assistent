@@ -1,3 +1,4 @@
+import time
 from typing import List
 
 import requests
@@ -87,11 +88,14 @@ def main():
     print('Hi')
     End = True
     while End:
-        answer = input('введи что хочешь посмотреть \n ')
-        if answer == 'погода':
-            Assistent().send_to_telegram(Assistent().get_weather())
-        if answer == ':q':
-            End = False
+        # answer = input('введи что хочешь посмотреть \n ')
+        # if answer == 'погода':
+        #     Assistent().send_to_telegram(Assistent().get_weather())
+        # if answer == ':q':
+        #     End = False
+        time.sleep(60)
+        Assistent().send_to_telegram(Assistent().get_weather())
+        time.sleep(3600)
         print("------------------------------------------")
 
 
